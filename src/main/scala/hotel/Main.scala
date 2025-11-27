@@ -5,10 +5,26 @@ import scala.io.Source
 object Main extends App:
 
   private val DataFile = "Hotel_Dataset.csv"
-  println("=== Hotel Booking Analysis (Step 1) ===")
 
-  val source = Source.fromFile(DataFile)
-  try
-    val lineCount = source.getLines().size
-    println(s"Number of lines in CSV (including header): $lineCount")
-    source.close()
+  println("=" * 40)
+  println("=== Hotel Booking Analysis (Step 2) ===")
+  println("=" * 40)
+
+  val bookings = loadBookings(DataFile)
+
+  println(s"Loaded ${bookings.size} bookings.")
+  println("First 3 bookings test:")
+  bookings.take(3).foreach(println)
+
+  private def loadBookings(path: String): Seq[HotelBooking] =
+    val source = Source.fromFile(path)
+    try
+      val lines = source.getLines().toList
+      if lines.isEmpty then
+        Seq.empty
+      else
+        val headerLine     = lines.head
+        val headerIndexMap = HotelBooking.headerIndex(headerLine)
+        lines.tail.flatMap(line => HotelBooking.fromCsvLine(line, headerIndexMap))
+    finally
+      source.close()
