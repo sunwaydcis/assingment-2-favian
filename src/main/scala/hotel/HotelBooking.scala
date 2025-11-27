@@ -20,7 +20,7 @@ object HotelBooking:
       index: Map[String, Int],
       separator: Char = ','
   ): Option[HotelBooking] =
-    val cols = line.split(separator, -1).map(_.trim)
+    val cols = line.split(separator).map(_.trim)
 
     def col(nameLower: String): String =
       cols(index(nameLower))      
