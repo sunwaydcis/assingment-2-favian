@@ -4,7 +4,7 @@ import scala.io.Source
 
 object Main extends App:
 
-  private val DataFile = "Hotel_Dataset.csv"
+  private val DataFile = "data/Hotel_Dataset.csv"
 
   println("=" * 40)
   println("=== Hotel Booking Analysis (Step 2) ===")
