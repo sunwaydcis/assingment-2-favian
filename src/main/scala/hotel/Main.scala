@@ -7,7 +7,7 @@ object Main extends App:
   private val DataFile = "data/Hotel_Dataset.csv"
 
   println("=" * 40)
-  println("=== Hotel Booking Analysis (Step 2) ===")
+  println("=== Hotel Booking Analysis ===")
   println("=" * 40)
 
   val bookings = loadBookings(DataFile)
