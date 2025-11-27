@@ -17,7 +17,7 @@ object Main extends App:
   bookings.take(3).foreach(println)
 
   private def loadBookings(path: String): Seq[HotelBooking] =
-    val source = Source.fromFile(path)
+    val source = Source.fromFile(path, "UTF-8")
     try
       val lines = source.getLines().toList
       if lines.isEmpty then
