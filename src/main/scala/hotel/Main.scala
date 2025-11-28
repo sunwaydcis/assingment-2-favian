@@ -24,6 +24,21 @@ object Main extends App:
   println("Q1: Country with the highest number of bookings:")
   println(s"  $topCountry with $topCount bookings")
 
+  val (cheapestHotel, cheapestAvgPrice) = hotelWithLowestAveragePrice(bookings)
+  println()
+  println("Q2(a): Most economical hotel by booking price (lowest average price):")
+  println(f"  $cheapestHotel with average price SGD $cheapestAvgPrice%.2f")
+
+private def hotelWithLowestAveragePrice(
+      bookings: Seq[HotelBooking]
+  ): (String, Double) =
+    val byHotel = bookings.groupBy(_.hotelName)
+    val avgPriceByHotel =
+      byHotel.view.mapValues { bs =>
+        val total = bs.map(_.bookingPrice).sum
+        total / bs.size
+      }.toMap
+    avgPriceByHotel.minBy { case (_, avgPrice) => avgPrice }
 
 private def loadBookings(path: String): Seq[HotelBooking] =
   implicit val codec: Codec = Codec("windows-1252")
