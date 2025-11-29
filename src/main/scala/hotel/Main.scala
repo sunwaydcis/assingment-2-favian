@@ -29,6 +29,18 @@ object Main extends App:
   println("Q2(a): Most economical hotel by booking price (lowest average price):")
   println(f"  $cheapestHotel with average price SGD $cheapestAvgPrice%.2f")
 
+  val (bestDiscountHotel, bestAvgDiscount) =
+    hotelWithHighestAverageDiscount(bookings)
+  println()
+  println("Q2(b): Most economical hotel by discount (highest average discount):")
+  println(f"  $bestDiscountHotel with average discount ${bestAvgDiscount * 100}%.2f%%")
+
+  val (lowestMarginHotel, lowestAvgMargin) =
+    hotelWithLowestAverageProfitMargin(bookings)
+  println()
+  println("Q2(c): Most economical hotel by profit margin (lowest average margin):")
+  println(f"  $lowestMarginHotel with average profit margin ${lowestAvgMargin * 100}%.2f%%")
+
 private def hotelWithLowestAveragePrice(
       bookings: Seq[HotelBooking]
   ): (String, Double) =
@@ -39,6 +51,28 @@ private def hotelWithLowestAveragePrice(
         total / bs.size
       }.toMap
     avgPriceByHotel.minBy { case (_, avgPrice) => avgPrice }
+
+private def hotelWithHighestAverageDiscount(
+      bookings: Seq[HotelBooking]
+  ): (String, Double) =
+    val byHotel = bookings.groupBy(_.hotelName)
+    val avgDiscByHotel =
+      byHotel.view.mapValues { bs =>
+        val total = bs.map(_.discountRate).sum
+        total / bs.size
+      }.toMap
+    avgDiscByHotel.maxBy { case (_, avgDisc) => avgDisc }
+
+private def hotelWithLowestAverageProfitMargin(
+      bookings: Seq[HotelBooking]
+  ): (String, Double) =
+    val byHotel = bookings.groupBy(_.hotelName)
+    val avgMarginByHotel =
+      byHotel.view.mapValues { bs =>
+        val total = bs.map(_.profitMargin).sum
+        total / bs.size
+      }.toMap
+    avgMarginByHotel.minBy { case (_, avgMargin) => avgMargin }
 
 private def loadBookings(path: String): Seq[HotelBooking] =
   implicit val codec: Codec = Codec("windows-1252")
